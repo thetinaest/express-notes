@@ -1,21 +1,34 @@
 const fs = require('fs');
 const path = require('path');
 const router = require('express').Router();
-// let db = require('../../db/db.json');
 const db = path.join(__dirname, '../../db/db.json');
 
 var notesArray = [];
 
 router.get('/notes',  (req, res) => {
     res.sendFile(db);
-    console.log(res);
+    fs.readFile(db, 'utf-8', (err, data) => {
+        if (err) throw err;
+        const notes = JSON.parse(data);
+        console.log(notes);
+        notes.map(({title, text, id})=>{
+            console.log(`Note number ${id} is called ${title} and says ${text}`);
+            let test = {
+                title: `${title}`,
+                text: `${text}`,
+                id: `${id}`
+            }
+            notesArray.push(test);
+        });
+    })
 });
+
 
 router.post('/notes', (req, res) => {
     let note = {
         title: req.body.title,
         text: req.body.text,
-        id: JSON.stringify(notesArray.length)
+        id: Math.floor(Math.random()* 100)
     }
     notesArray.push(note)
     content = JSON.stringify(notesArray);
