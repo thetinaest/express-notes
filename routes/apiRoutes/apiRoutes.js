@@ -10,15 +10,13 @@ router.get('/notes',  (req, res) => {
     fs.readFile(db, 'utf-8', (err, data) => {
         if (err) throw err;
         const notes = JSON.parse(data);
-        console.log(notes);
         notes.map(({title, text, id})=>{
-            console.log(`Note number ${id} is called ${title} and says ${text}`);
-            let test = {
+            let previousNote = {
                 title: `${title}`,
                 text: `${text}`,
                 id: `${id}`
             }
-            notesArray.push(test);
+            notesArray.push(previousNote);
         });
     })
 });
