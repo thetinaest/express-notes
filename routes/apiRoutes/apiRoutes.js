@@ -10,23 +10,24 @@ router.get('/notes',  (req, res) => {
     fs.readFile(db, 'utf-8', (err, data) => {
         if (err) throw err;
         const notes = JSON.parse(data);
+        console.log(notes);
         notes.map(({title, text, id})=>{
-            let previousNote = {
+            console.log(`Note number ${id} is called ${title} and says ${text}`);
+            let test = {
                 title: `${title}`,
                 text: `${text}`,
                 id: `${id}`
             }
-            notesArray.push(previousNote);
+            notesArray.push(test);
         });
     })
 });
-
 
 router.post('/notes', (req, res) => {
     let note = {
         title: req.body.title,
         text: req.body.text,
-        id: Math.floor(Math.random()* 100)
+        id: JSON.stringify(notesArray.length)
     }
     notesArray.push(note)
     content = JSON.stringify(notesArray);
